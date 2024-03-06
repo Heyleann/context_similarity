@@ -1,5 +1,8 @@
 import torch
-from utils import (get_model,get_splitter,context_score,evaluate)
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from utils import (get_model,get_splitter,context_score,evaluate,split,embed)
 
 
 class Scorer:
@@ -20,6 +23,7 @@ class Scorer:
         self.encode_kwargs = {'normalize_embeddings': True} if encode_kwargs is None else encode_kwargs
         self.model = get_model(model_type,self.model_kwargs,self.encode_kwargs)
         self.splitter = get_splitter(chunk_size,chunk_overlap,separators)
+        self.scores = None
 
 
     def update(self):
@@ -27,6 +31,27 @@ class Scorer:
         self.splitter = get_splitter(self.chunk_size, self.chunk_overlap, self.separators)
 
     def score(self,text,target):
-        scores = context_score(text,target,self.model,self.splitter)
-        return scores, evaluate(scores)
+        self.scores = context_score(text,target,self.model,self.splitter)
+        return self.scores
 
+    def evaluate(self):
+        return evaluate(self.scores)
+
+    def display_chunks(self,text,target):
+        text = split(self.splitter,text)
+        target = split(self.splitter,target)
+        return text, target
+
+    def display_embeddings(self,text,target):
+        text = embed(self.model,split(self.splitter, text))
+        target = embed(self.model,split(self.splitter, target))
+        return text, target
+
+    def plot(self,text,target,title):
+        scores = self.score(text,target)
+        mask = np.zeros_like(scores)
+        mask[np.triu_indices_from(mask)]=True
+        with sns.axes_style("white"):
+            ax = sns.heatmap(scores,mask=mask,square=True,cmap = "crest",annot=True,fmt=".2f")
+            ax.set(xlabel="Target",ylabel='Text',title=f'{title}')
+            plt.show()
