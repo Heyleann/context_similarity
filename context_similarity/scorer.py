@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from utils import (get_model,get_splitter,context_score,evaluate,split,embed)
+from .utils import (get_model,get_splitter,context_score,evaluate,split,embed)
 
 
 class Scorer:
