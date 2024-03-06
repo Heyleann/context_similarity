@@ -54,7 +54,7 @@ def score_matrix(arr1,arr2):
         if arr1.shape[1]==arr2.shape[1]:
             pass
         else:
-            print('Context Embbedding should have the same dimensions!')
+            print('Context Embedding should have the same dimensions!')
             return
     else:
         print('Inputs must be iterable!')
