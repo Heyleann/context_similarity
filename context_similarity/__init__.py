@@ -1,1 +1,1 @@
-from scorer import *
+from .scorer import *
