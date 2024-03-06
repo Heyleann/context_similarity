@@ -1,32 +1,23 @@
 from io import open
 
-from setuptools import find_packages, setup
+import setuptools
 
-setup(
-    name="context_similarity",
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
+    name="context-similarity",
     version="0.0.1",
-    long_description=open("README.md", "r", encoding="utf-8").read(),
+    author="Lihan Zhou",
+    author_email="heyleann@outlook.com",
+    description="A package that enables comparison between two context using bge.",
+    long_description=long_description,
     long_description_content_type="text/markdown",
-    keywords="context similarity text generation GenAI",
-    license="MIT",
     url="https://github.com/Heyleann/context_similarity",
-    packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
-    install_requires=[
-        "torch>=1.0.0",
-        "pandas>=1.0.1",
-        "transformers>=3.0.0",
-        "numpy",
-        "matplotlib",
-        "packaging>=20.9",
-        'langchain',
-    ],
-    include_package_data=True,
-    python_requires=">=3.6",
-    tests_require=["pytest"],
+    packages=setuptools.find_packages(),
     classifiers=[
-        "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
     ],
 )
